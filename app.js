@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const sanitizeHtml = require('sanitize-html');
 const hpp = require('hpp'); //middleware para proteger la app de ataques de HTTP param pollution
 const cookieParser = require('cookie-parser'); //middleware para parsear las cookies
+const compression = require('compression');
 
 const AppError = require('./utils/appError');
 const { errorController } = require('./controllers/errorController');
@@ -18,6 +19,7 @@ const viewRouter = require('./routes/viewRoutes');
 //cookie parser
 
 const app = express(); // create an express app
+app.use(compression()); //middleware para comprimir las respuestas, mejora el rendimiento de la app
 //proxy para ngrok
 app.set('trust proxy', 1); //esto es para que express sepa que esta corriendo detrás de un proxy, como ngrok
 

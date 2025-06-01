@@ -13,8 +13,8 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
   if (!tour) {
     return next(new AppError('Tour not found', 404));
   }
-  const url = `${req.protocol}://${req.get('host')}/payment-success`;
-  console.log(`Payment success URL: ${url}`);
+  // const url = `${req.protocol}://${req.get('host')}/payment-success`;
+  // console.log(`Payment success URL: ${url}`);
   // Create a preference for Mercado Pago
   const baseURL =
     process.env.NODE_ENV === 'production'

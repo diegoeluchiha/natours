@@ -15,7 +15,7 @@ export default [
     rules: {
       'no-console': 'warn', //no se puede usar console.log
       'no-undef': 'error', //no se puede usar una variable no declarada
-      'no-unused-vars': 'error', //no se puede declarar una variable y no usarla
+      'no-unused-vars': ['error', { argsIgnorePattern: '^next$' }],
       'no-var': 'error',
       'prefer-const': 'error', //se debe usar const en lugar de let en variables que no cambian
     },
