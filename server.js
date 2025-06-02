@@ -32,8 +32,7 @@ mongoose.connect(DB).then(() => {
 
 const port = process.env.PORT || 3000; //definimos el puerto
 
-const server = app.listen(port, '127.0.0.1', () => {
-  // console.log('debugger si');
+const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
