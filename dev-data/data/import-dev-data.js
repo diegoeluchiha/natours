@@ -10,7 +10,10 @@ dotenv.config({ path: './config.env' }); //configuramos dotenv para que lea el a
 // console.log(process.env);
 // console.log(process.env);
 // const DB = process.env.DATABASE_URL_ATLAS.replace('<db_password>', process.env.DATABASE_PASSWORD);
-const DB = process.env.DATABASE_URL_LOCAL;
+const DB =
+  process.env.NODE_ENV === 'production'
+    ? process.env.DATABASE_URL_ATLAS
+    : process.env.DATABASE_URL_LOCAL;
 
 mongoose.connect(DB).then(() => {
   console.log('conexion exitosa para insercion de datos');
