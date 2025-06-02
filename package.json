@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "aprendizaje node ,express, mongodb",
   "scripts": {
+    "start": "node server.js",
     "start:dev": "nodemon server.js",
     "start:prod": "set NODE_ENV=production&& nodemon server.js",
     "data:import": "node ./dev-data/data/import-dev-data.js --import",
