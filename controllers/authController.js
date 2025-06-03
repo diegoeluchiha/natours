@@ -14,14 +14,16 @@ const signToken = (id) => {
 };
 
 //refactorizar el createSendToken sin cookie
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id); //esto es para crear el token con el id del usuario
 
   const cookieOptions = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     httpOnly: true, //esto es para que la cookie no sea accesible desde el cliente
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https' ? true : false,
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true; //esto es para que la cookie solo se envie por https
+  // if (process.env.NODE_ENV === 'production') cookieOptions.secure = true; //esto es para que la cookie solo se envie por https
+
   res.cookie('jwt', token, cookieOptions); //aqui se envia la cookie al cliente y se guarda en el navegador
   // Remove password from output
   user.password = undefined;
@@ -46,15 +48,14 @@ const signup = catchAsync(async (req, res) => {
   });
 
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  // console.log(url);
   await new Email(newUser, url).sendWelcome();
 
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 
 const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email, password);
 
   //1) check if email and password exist
   if (!email || !password) {
@@ -70,13 +71,13 @@ const login = catchAsync(async (req, res, next) => {
   }
 
   //3) if everything ok, send token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 const logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
+    httpOnly: true, //esto es para que la cookie no sea accesible desde el cliente
   });
   res.status(200).json({
     status: 'success',
@@ -205,7 +206,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // Usar la función modular para enviar el token
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 const updatePassword = catchAsync(async (req, res, next) => {
@@ -224,7 +225,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
   //!user.findByIdAndUpdate no funciona porque no funcionarian las validaciones y el middleware de save no lo hace
   //4) log user in, send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 module.exports = {
