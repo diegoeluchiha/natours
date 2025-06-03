@@ -1,5 +1,6 @@
 const path = require('path'); //modulo para manejar rutas
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan'); //middleware para loggear las peticiones
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet'); //middleware para proteger la app de ataques
@@ -19,6 +20,14 @@ const viewRouter = require('./routes/viewRoutes');
 //cookie parser
 
 const app = express(); // create an express app
+// 🌟MIDDLEWARES 🌟
+app.use(cors()); //middleware para permitir peticiones desde otros dominios
+//Access-Control-Allow-Origin: * //esto es para permitir peticiones desde otros dominios, se puede especificar el dominio en lugar de usar *
+// api.natours.com // Access-Control-Allow-Origin: https://natours.com
+// app.use(cors({ origin: 'https://natours.com' })); //esto es para permitir peticiones desde un dominio especifico
+
+app.options('*', cors()); //esto es para permitir peticiones OPTIONS desde cualquier dominio, esto es necesario para que funcionen las peticiones CORS
+// app.options('/api/v1/tours/:id', cors());
 app.use(compression()); //middleware para comprimir las respuestas, mejora el rendimiento de la app
 //proxy para ngrok
 app.set('trust proxy', 1); //esto es para que express sepa que esta corriendo detrás de un proxy, como ngrok
