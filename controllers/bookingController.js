@@ -35,7 +35,7 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
       ],
       back_urls: {
         // https://61bc-181-163-208-201.ngrok-free.app
-        success: `${baseURL}/payment-success`,
+        success: `${baseURL}/my-tours`,
         failure: `${baseURL}/payment-failure`,
         pending: `${baseURL}/payment-pending`,
       },
@@ -54,13 +54,30 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
 
 const handleWebhook = catchAsync(async (req, res, next) => {
   const data = req.body;
+
   if (data.type === 'payment') {
-    const paymentId = data.data.id; // Get the payment ID from the webhook data
+    const paymentId = data.data.id;
+
     const result = await payment.get({ id: paymentId });
-    console.log(result); // Aquí tienes los datos del pago
+
+    // Validar que el pago esté aprobado
+    if (result.status === 'approved') {
+      const [tourId, userId] = result.external_reference.split('_');
+      const price = result.transaction_amount;
+
+      // Evitar duplicados
+      const exists = await Booking.findOne({ tour: tourId, user: userId });
+      if (!exists) {
+        await Booking.create({
+          tour: tourId,
+          user: userId,
+          price,
+          paid: true,
+        });
+      }
+    }
   }
 
-  // Respond to Mercado Pago to acknowledge receipt of the webhook
   res.status(200).json({ received: true });
 });
 

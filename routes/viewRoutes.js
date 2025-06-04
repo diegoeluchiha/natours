@@ -20,7 +20,7 @@ router.get('/tour/:slug', isLoggedIn, getTour); //ruta para la app de lado del s
 
 router.get('/login', isLoggedIn, getLogin); //ruta para la app de lado del servidor
 router.get('/register', isLoggedIn, getRegister); //ruta para la app de lado del servidor
-router.get('/my-tours', protect, getMyTours); //ruta para la app de lado del servidor
+router.get('/my-tours', protect, getMyTours); //ruta para la app de lado del servidor especificamente de los tours
 
 // /submit-user-data
 router.post('/submit-user-data', protect, updateUserData); //ruta para la app de lado del servidor
