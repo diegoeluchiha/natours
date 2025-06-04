@@ -9,7 +9,7 @@ html(lang="es")
       link(rel="shortcut icon" href="/img/favicon.png" type="image/png")
       link(href="https://fonts.googleapis.com/css?family=Lato:300,300i,700" rel="stylesheet")
       title Natours | #{title}
-  body
+  body(data-alert=(alert ? alert : ''))
     include _header.pug
 
     block content

@@ -90,6 +90,16 @@ const updateUserData = catchAsync(async (req, res, next) => {
   });
 });
 
+const alerts = (req, res, next) => {
+  // Middleware to handle alerts
+  const { alert } = req.query;
+  if (alert === 'booking') {
+    res.locals.alert = 'Your booking was successful! Please check your email for confirmation.';
+  }
+
+  next();
+};
+
 module.exports = {
   getOverview,
   getTour,
@@ -98,4 +108,5 @@ module.exports = {
   getAccount,
   updateUserData,
   getMyTours,
+  alerts,
 };

@@ -5,6 +5,7 @@ import { login } from './login';
 import { logout } from './logout';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './mercadopago';
+import { showAlert } from './alerts';
 
 /**
  * ===========================
@@ -115,4 +116,14 @@ if (bookBtn) {
     console.log(`Booking tour with ID: ${tourId}`);
     bookTour(tourId);
   });
+}
+
+/**
+ * ===========================
+ * 7. ALERTS
+ * ===========================
+ */
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) {
+  showAlert('success', alertMessage, 10);
 }

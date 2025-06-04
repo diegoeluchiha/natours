@@ -35,7 +35,7 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
       ],
       back_urls: {
         // https://61bc-181-163-208-201.ngrok-free.app
-        success: `${baseURL}/my-tours`,
+        success: `${baseURL}/my-tours?alert=booking`,
         failure: `${baseURL}/payment-failure`,
         pending: `${baseURL}/payment-pending`,
       },

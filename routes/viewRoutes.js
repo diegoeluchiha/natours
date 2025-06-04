@@ -7,11 +7,13 @@ const {
   getAccount,
   updateUserData,
   getMyTours,
+  alerts,
 } = require('../controllers/viewsController');
 const { protect, isLoggedIn } = require('../controllers/authController');
 
 const router = express.Router();
 
+router.use(alerts); //middleware para las alertas de la app de lado del servidor
 //rutas de la app de lado del servidor
 
 // router.use(isLoggedIn); //middleware para saber si el usuario esta logueado o no
