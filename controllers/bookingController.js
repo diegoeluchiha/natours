@@ -62,7 +62,7 @@ const handleWebhook = catchAsync(async (req, res, next) => {
 
     // Validar que el pago esté aprobado
     if (result.status === 'approved') {
-      const [tourId, userId] = result.external_reference.split('_');
+      const [userId, tourId] = result.external_reference.split('_');
       const price = result.transaction_amount;
 
       // Evitar duplicados
